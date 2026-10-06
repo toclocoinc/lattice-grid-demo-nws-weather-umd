@@ -194,13 +194,18 @@
     return rows;
   }
 
-  /** Every active weather alert across the country. */
+  /** Every active weather alert across the country. The API occasionally
+      repeats the same alert feature (e.g. when it covers overlapping
+      zones), so rows are kept unique by id. */
   async function fetchAlerts(opts = {}) {
     const body = await requestJson(`${BASE}/alerts/active`, 'active alerts feed', opts);
     const rows = [];
+    const seen = new Set();
     for (const item of body.features || []) {
       const row = toAlertRow(item);
-      if (row) rows.push(row);
+      if (!row || seen.has(row.id)) continue;
+      seen.add(row.id);
+      rows.push(row);
     }
     return rows;
   }
