@@ -32,13 +32,13 @@ airport's chart, pushing the oldest reading out of the two-day window.
 Six tags in `index.html`, and that is the whole of the library setup:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@toclocoinc/lattice-grid@1.87.0/lattice-grid.min.css">
+<link rel="stylesheet" href="https://cdn.latticegrid.dev/lattice-grid@1.111.7/lattice-grid.min.css?v=20261022">
 
-<script src="https://cdn.jsdelivr.net/npm/@toclocoinc/lattice-grid@1.87.0/lattice-grid.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@toclocoinc/lattice-grid@1.87.0/modules/charts.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@toclocoinc/lattice-grid@1.87.0/modules/data-router.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@toclocoinc/lattice-grid@1.87.0/modules/kpi.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@toclocoinc/lattice-grid@1.87.0/modules/tabs.min.js"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/lattice-grid.min.js?v=20261022"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/modules/charts.min.js?v=20261022"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/modules/data-router.min.js?v=20261022"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/modules/kpi.min.js?v=20261022"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/modules/tabs.min.js?v=20261022"></script>
 ```
 
 Each file is the package's UMD build and leaves a global behind:
@@ -56,9 +56,7 @@ one of its own, so its tag must come after the core's. The other three are
 self-contained and can go in any order. `main.js` checks that every factory it
 needs is actually there before it draws anything.
 
-Every address names the exact release, `1.87.0`, and every tag carries the
-`integrity` hash of the file it expects. The hashes are the SHA-384 of the
-published files.
+Every address names the exact release, `1.111.7`, and carries a `?v=` cache stamp.
 
 The demo's own code is four classic scripts, loaded in order: `src/licence.js`,
 `src/nws-feed.js`, `src/dashboard.js`, `main.js`. Each file wraps itself in a
@@ -199,7 +197,7 @@ node tools/verify.mjs --all  # also open the live API
 
 `tools/verify.mjs` first insists on how the library arrived: no `type="module"`
 script anywhere on the page, five script tags pointing at the pinned release on
-the CDN, each with an integrity hash, and each leaving the global it documents.
+the CDN, and each leaving the global it documents.
 It then recomputes the headline figures from the saved data and compares them
 with what the page is showing, checks the eight rolling charts drew marks, opens
 the alerts table and pushes an alert through to prove it lands there and not in

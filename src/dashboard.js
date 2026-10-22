@@ -445,7 +445,10 @@
 
     /* ---------------- the rolling charts ---------------- */
 
-    const trimWindow = (rows) => rows.filter((row) => Date.now() - row.time <= WINDOW_MS);
+    /* The window ends now for live data, and at the moment the saved copy was
+       taken for a saved copy; otherwise the copy ages out and the charts empty. */
+    const windowEnd = () => (meta.live ? Date.now() : meta.fetchedAtMs || Date.now());
+    const trimWindow = (rows) => rows.filter((row) => windowEnd() - row.time <= WINDOW_MS);
 
     for (const entry of chartStations) {
       try {

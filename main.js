@@ -11,7 +11,7 @@
  * and says so at the top, rather than showing an error.
  *
  * This is the script-tag edition. The grid and its modules arrived as classic
- * `<script src>` tags from jsDelivr, ahead of this file, and left globals
+ * `<script src>` tags from the Lattice Grid CDN, ahead of this file, and left globals
  * behind. This file picks the factories off those globals and hands them to
  * the dashboard, which never touches a global itself.
  */

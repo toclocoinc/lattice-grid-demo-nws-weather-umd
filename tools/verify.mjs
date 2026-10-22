@@ -3,12 +3,12 @@
  *
  * Serves the project and opens the saved copy, so the check never depends on
  * the National Weather Service API being reachable. It does depend on
- * jsDelivr, because that is where the page gets the grid from.
+ * the Lattice Grid CDN, because that is where the page gets the grid from.
  *
  * It asserts the things this demo exists to show:
  *
  *   - the library arrived by classic script tag (no type="module", pinned
- *     release, integrity hashes, each file left its global);
+ *     release, no integrity hashes, each file left its global);
  *   - the observations table holds rows, the alerts table holds rows, and the
  *     eight rolling charts drew marks;
  *   - the headline figures agree with the saved data, recomputed here;
@@ -41,8 +41,8 @@ const shotIndex = args.indexOf('--shots');
 const shotDir = shotIndex >= 0 ? resolve(args[shotIndex + 1]) : null;
 const all = args.includes('--all');
 
-const GRID_VERSION = '1.87.0';
-const CDN_BASE = `https://cdn.jsdelivr.net/npm/@toclocoinc/lattice-grid@${GRID_VERSION}/`;
+const GRID_VERSION = '1.111.7';
+const CDN_BASE = `https://cdn.latticegrid.dev/lattice-grid@${GRID_VERSION}/`;
 const LIBRARY_TAGS = [
   { file: 'lattice-grid.min.js', global: 'LatticeGrid', member: 'createGrid' },
   { file: 'modules/charts.min.js', global: 'LatticeGrid', member: 'createChart' },
@@ -258,9 +258,9 @@ try {
     return {
       moduleScripts: scripts.filter((s) => s.type === 'module').length,
       importmaps: scripts.filter((s) => s.type === 'importmap').length,
-      librarySrcs: scripts.map((s) => s.getAttribute('src') || '').filter((src) => /cdn\\.jsdelivr\\.net/.test(src)),
-      withIntegrity: scripts.filter((s) => /cdn\\.jsdelivr\\.net/.test(s.src) && s.integrity).length,
-      stylesheetSrc: (document.querySelector('link[rel=stylesheet][href*="cdn.jsdelivr.net"]') || {}).href || null,
+      librarySrcs: scripts.map((s) => s.getAttribute('src') || '').filter((src) => /cdn\\.latticegrid\\.dev/.test(src)),
+      withIntegrity: scripts.filter((s) => /cdn\\.latticegrid\\.dev/.test(s.src) && (s.integrity || s.crossOrigin)).length,
+      stylesheetSrc: (document.querySelector('link[rel=stylesheet][href*="cdn.latticegrid.dev"]') || {}).href || null,
       globals,
       members: {
         createGrid: typeof (window.LatticeGrid || {}).createGrid,
@@ -273,17 +273,17 @@ try {
       },
     };
   })()`);
-  console.log(`  library tags: ${delivery.librarySrcs.length} from the CDN, ${delivery.withIntegrity} with an integrity hash; module scripts on the page: ${delivery.moduleScripts}`);
+  console.log(`  library tags: ${delivery.librarySrcs.length} from the CDN, ${delivery.withIntegrity} with an integrity attribute; module scripts on the page: ${delivery.moduleScripts}`);
   check(delivery.moduleScripts === 0, 'delivery: no type="module" script on the page', `${delivery.moduleScripts}`);
   check(delivery.importmaps === 0, 'delivery: no import map on the page', `${delivery.importmaps}`);
   check(delivery.librarySrcs.length === LIBRARY_TAGS.length, `delivery: ${LIBRARY_TAGS.length} library script tags point at the CDN`, `${delivery.librarySrcs.length}`);
   for (const tag of LIBRARY_TAGS) {
     const wanted = `${CDN_BASE}${tag.file}`;
-    check(delivery.librarySrcs.includes(wanted), `delivery: ${tag.file} is loaded from the pinned ${GRID_VERSION} release`, wanted);
+    check(delivery.librarySrcs.some((src) => src.split('?')[0] === wanted), `delivery: ${tag.file} is loaded from the pinned ${GRID_VERSION} release`, wanted);
     check(delivery.members[tag.member] === 'function', `delivery: ${tag.file} left ${tag.global}.${tag.member} behind`, delivery.members[tag.member]);
   }
-  check(delivery.withIntegrity === LIBRARY_TAGS.length, 'delivery: every library tag carries an integrity hash', `${delivery.withIntegrity} of ${LIBRARY_TAGS.length}`);
-  check(delivery.stylesheetSrc === `${CDN_BASE}lattice-grid.min.css`, `delivery: the stylesheet is loaded from the pinned ${GRID_VERSION} release`, delivery.stylesheetSrc);
+  check(delivery.withIntegrity === 0, 'delivery: no library tag carries an integrity or crossorigin attribute', `${delivery.withIntegrity}`);
+  check((delivery.stylesheetSrc || '').split('?')[0] === `${CDN_BASE}lattice-grid.min.css`, `delivery: the stylesheet is loaded from the pinned ${GRID_VERSION} release`, delivery.stylesheetSrc);
   check(delivery.members.setLicence === 'function', 'delivery: setLicence is on the core global');
   check(delivery.members.createHeadlessGrid === 'function', 'delivery: createHeadlessGrid is on the core global');
 
