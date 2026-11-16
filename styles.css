@@ -142,18 +142,13 @@ body {
   font-size: 15px;
   font-weight: 650;
   line-height: 1.2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .kpi-named-label {
   color: var(--ink-soft);
   font-size: 12px;
   margin-top: 3px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* Charts */
@@ -330,6 +325,20 @@ body {
 }
 
 @media (max-width: 600px) {
+  #app {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .tabs-host {
+    flex: none;
+    height: 560px;
+  }
+
+  .kpi-named-wrap {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .freshness {
     white-space: normal;
   }

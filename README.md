@@ -32,13 +32,13 @@ airport's chart, pushing the oldest reading out of the two-day window.
 Six tags in `index.html`, and that is the whole of the library setup:
 
 ```html
-<link rel="stylesheet" href="https://cdn.latticegrid.dev/lattice-grid@1.111.7/lattice-grid.min.css?v=20261022">
+<link rel="stylesheet" href="https://cdn.latticegrid.dev/lattice-grid@1.123.3/lattice-grid.min.css?v=20261116">
 
-<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/lattice-grid.min.js?v=20261022"></script>
-<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/modules/charts.min.js?v=20261022"></script>
-<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/modules/data-router.min.js?v=20261022"></script>
-<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/modules/kpi.min.js?v=20261022"></script>
-<script src="https://cdn.latticegrid.dev/lattice-grid@1.111.7/modules/tabs.min.js?v=20261022"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.123.3/lattice-grid.min.js?v=20261116"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.123.3/modules/charts.min.js?v=20261116"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.123.3/modules/data-router.min.js?v=20261116"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.123.3/modules/kpi.min.js?v=20261116"></script>
+<script src="https://cdn.latticegrid.dev/lattice-grid@1.123.3/modules/tabs.min.js?v=20261116"></script>
 ```
 
 Each file is the package's UMD build and leaves a global behind:
@@ -56,7 +56,7 @@ one of its own, so its tag must come after the core's. The other three are
 self-contained and can go in any order. `main.js` checks that every factory it
 needs is actually there before it draws anything.
 
-Every address names the exact release, `1.111.7`, and carries a `?v=` cache stamp.
+Every address names the exact release and carries a `?v=` cache stamp.
 
 The demo's own code is four classic scripts, loaded in order: `src/licence.js`,
 `src/nws-feed.js`, `src/dashboard.js`, `main.js`. Each file wraps itself in a
